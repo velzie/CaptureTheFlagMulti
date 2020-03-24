@@ -7,7 +7,7 @@ var height = 700;
 var serv = require('http').Server(app);
 app.get('/',(req,res) => res.sendFile(__dirname + '/client/index.html'));
 app.use('/client',express.static(__dirname + '/client'));
-serv.listen(2000);
+serv.listen(process.env.PORT || 5000);
 var flags = [{x:20,y:350},{x:1360,y:350}];
 var score = [0,0];
 var io = require('socket.io')(serv,{});
