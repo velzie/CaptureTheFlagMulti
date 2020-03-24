@@ -21,7 +21,7 @@ if (all != null){
   fill(0);
   rect(550,0,300,100);
   fill(255);
-  rect(690,0,20,100);
+  rect(680,0,40,100);
   textSize(40);
   textAlign(CENTER,CENTER);
   text(all[0][0],550,0,150,100);

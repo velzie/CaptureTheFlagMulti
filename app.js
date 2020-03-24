@@ -47,7 +47,7 @@ you.y -= 2;
 }
 if (packet.keys[65]){
 if (you.x > 0){
-if (you.x > 150 || you.team == 1){
+if (you.x > 100 || you.team == 1){
 you.x -= 2;
 }
 }
@@ -59,7 +59,7 @@ you.y += 2;
 }
 if (packet.keys[68]){
   if (you.x < width - 20){
-  if (you.x < width - 170 || you.team == 0){
+  if (you.x < width - 100 || you.team == 0){
 you.x += 2;
 }
 }
@@ -90,11 +90,21 @@ if (collideRectRect(flags[0].x,flags[0].y,20,20,you.x,you.y,20,20)){
 for (var player of all) {
   if (collideRectRect(player.x,player.y,20,20,you.x,you.y,20,20)){
     if (you.team == 1 && player.team == 0){
+      if (you.x > 700){
       you.x = 1200;
       you.y = 350;
+    }else{
+      player.x = 200;
+      player.y = 350;
+    }
     }else if (you.team == 0 && player.team == 1){
+      if (you.x > 700){
       you.x = 200;
       you.y = 350;
+    }else{
+      player.x = 200;
+      player.y = 350;
+    }
     }
   }
 }
