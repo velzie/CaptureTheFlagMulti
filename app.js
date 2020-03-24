@@ -10,7 +10,12 @@ app.use('/client',express.static(__dirname + '/client'));
 serv.listen(process.env.PORT || 5000);
 var flags = [{x:20,y:350},{x:1360,y:350}];
 var score = [0,0];
+var powerups = [];
 var io = require('socket.io')(serv,{});
+setInterval(()=> {
+powerups.push(new SpeedPowerUp());
+setTimeout(()=>powerups.splice(powerups.length - 1,1),20000);
+},10000);
 io.sockets.on('connection',(socket)=>{
 console.log("*Player 42B has entered the chat");
 // players have connected. Yay! I'm popular now.
@@ -31,7 +36,7 @@ if (all != []){
     }
   }
 }
-socket.you = {x:1000 * team + 200,y:350,team:team};
+socket.you = {x:1000 * team + 200,y:350,team:team,speed:4};
 socket.on('disconnect',(socket)=>{
 console.log("*Player 42B has left the chat");
 // WHY DID THEY HAVE TO LEAVE I'M PERFECT!!!!!!!
@@ -42,25 +47,33 @@ var you = socket.you;
 
 if (packet.keys[87]){
 if (you.y > 0){
-you.y -= 4;
+you.y -= you.speed;
 }
 }
 if (packet.keys[65]){
 if (you.x > 0){
 if (you.x > 100 || you.team == 1){
-you.x -= 4;
+you.x -= you.speed;
 }
 }
 }
 if (packet.keys[83]){
 if (you.y < height - 20){
-you.y += 4;
+you.y += you.speed;
 }
 }
 if (packet.keys[68]){
   if (you.x < width - 20){
   if (you.x < width - 100 || you.team == 0){
-you.x += 4;
+you.x += you.speed;
+}
+}
+for (var i = 0; i < powerups.length; i++) {
+let power = powerups[i];
+if (collideRectRect(power.x,power.y,20,20,you.x,you.y,20,20)){
+powerups.splice(i,1);
+you.speed += 4;
+setTimeout(()=>you.speed = 4,9000);
 }
 }
 }
@@ -102,7 +115,7 @@ for (var player of all) {
       you.x = 200;
       you.y = 350;
     }else{
-      player.x = 200;
+      player.x = 1200;
       player.y = 350;
     }
     }
@@ -117,7 +130,7 @@ if (clients[c].connected){
 all.push(clients[c].you);
 }
 }
-socket.emit('drawdata',[score,flags,all]);
+socket.emit('drawdata',[score,flags,all,powerups]);
 })
 });
 function collideRectRect(x, y, w, h, x2, y2, w2, h2) {
@@ -134,7 +147,22 @@ class SpeedPowerUp {
     this.x = Math.random() * width;
     this.y = Math.random() * height;
   }
-  update(){
-    
+}
+class LaserPowerUp {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+  }
+}
+class ForceFieldPowerUp {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+  }
+}
+class LandminePowerUp {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
   }
 }

@@ -31,6 +31,10 @@ if (all != null){
   rect(all[1][0].x,all[1][0].y,20,20);
   fill(50,50,100);
   rect(all[1][1].x,all[1][1].y,20,20);
+  for (var power of all[3]) {
+    fill(0,255,255);
+    rect(power.x,power.y,20,20);
+  }
     //flags
 for (var player of all[2]) {
 strokeWeight(5);
