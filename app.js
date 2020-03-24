@@ -42,25 +42,25 @@ var you = socket.you;
 
 if (packet.keys[87]){
 if (you.y > 0){
-you.y -= 2;
+you.y -= 4;
 }
 }
 if (packet.keys[65]){
 if (you.x > 0){
 if (you.x > 100 || you.team == 1){
-you.x -= 2;
+you.x -= 4;
 }
 }
 }
 if (packet.keys[83]){
 if (you.y < height - 20){
-you.y += 2;
+you.y += 4;
 }
 }
 if (packet.keys[68]){
   if (you.x < width - 20){
   if (you.x < width - 100 || you.team == 0){
-you.x += 2;
+you.x += 4;
 }
 }
 }
@@ -90,7 +90,7 @@ if (collideRectRect(flags[0].x,flags[0].y,20,20,you.x,you.y,20,20)){
 for (var player of all) {
   if (collideRectRect(player.x,player.y,20,20,you.x,you.y,20,20)){
     if (you.team == 1 && player.team == 0){
-      if (you.x > 700){
+      if (you.x < 700){
       you.x = 1200;
       you.y = 350;
     }else{
@@ -129,3 +129,12 @@ function collideRectRect(x, y, w, h, x2, y2, w2, h2) {
   }
   return false;
 };
+class SpeedPowerUp {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+  }
+  update(){
+    
+  }
+}
