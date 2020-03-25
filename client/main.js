@@ -70,7 +70,7 @@ strokeWeight(5);
   if (player.laser){
     strokeWeight(20);
     stroke(255, 153, 0);
-    line(player.x + 10,player.y + 10,player.x + 1000 * player.dir[0] + 10,player.y + 1000 * player.dir[1] + 10)
+    line(player.x + 10,player.y + 10,player.x + 1000 * player.dir[0] + 10,player.y + 1000 * player.dir[1] + 10);
   }
 }
 

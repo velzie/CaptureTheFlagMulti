@@ -140,12 +140,22 @@ for (var player of all) {
         player.x = 200;
         player.y = 350;
       }else{
+      if (collideRectRect(flags[0].x,flags[0].y,20,20,you.x,you.y,20,20)){
+        flags[0].x = 20;
+        flags[0].y = 350;
+      }
       you.x = 1200;
       you.y = 350;
     }
     }else{
+      if (player.forcefield){
+        you.forcefield = false;
+        you.x = 1200;
+        you.y = 350;
+      }else{
       player.x = 200;
       player.y = 350;
+    }
     }
     }else if (you.team == 0 && player.team == 1){
       if (you.x > 700){
@@ -154,14 +164,38 @@ for (var player of all) {
         player.x = 1200;
         player.y = 350;
     }else{
+      if (collideRectRect(flags[1].x,flags[1].y,20,20,you.x,you.y,20,20)){
+        flags[1].x = 1360;
+        flags[1].y = 350;
+      }
       you.x = 200;
       you.y = 350;
+
     }
     }else{
+      if (player.forcefield){
+        you.forcefield = false;
+        you.x = 200;
+        you.y = 350;
+      }else{
       player.x = 1200;
       player.y = 350;
     }
     }
+    }
+  }
+  // oh no what if a laser hits me
+  if (
+  collideLineRect(you.x,you.y,20,20,
+  player.x + 10,player.y + 10,
+  player.x + 1000 * player.dir[0] + 10,player.y + 1000 * player.dir[1] + 10)
+  && player != you
+  && player.team != you.team
+  && player.laser
+  ){
+    console.log("aah a laser hit" + you.team);
+    you.speed -= 0.6;
+    setTimeout(()=> you.speed = 4,4000);
   }
 }
 
@@ -184,7 +218,24 @@ function collideRectRect(x, y, w, h, x2, y2, w2, h2) {
         return true;
   }
   return false;
-};
+}
+function collideLineLine(a,b,c,d,p,q,r,s) {
+  var det, gamma, lambda;
+  det = (c - a) * (s - q) - (r - p) * (d - b);
+  if (det === 0) {
+    return false;
+  } else {
+    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+  }
+}
+function collideLineRect(x,y,w,h,a,b,c,d) {
+   return collideLineLine(x,y,x,y + h,a,b,c,d) ||
+          collideLineLine(x,y + h,x + w,y + h,a,b,c,d) ||
+          collideLineLine(x + w,y,x + w,y + h,a,b,c,d) ||
+          collideLineLine(x,y,x + w,y,a,b,c,d);
+}
 class PowerUp {
   constructor(type) {
     this.x = Math.floor(Math.random() * width);
