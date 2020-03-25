@@ -82,17 +82,17 @@ for (var i = 3; i < 255; i++) {
 }
 }else{
 if (mouseIsPressed){
-destination = [mouseX,mouseY];
+destination = [mouseX * 1.05,mouseY * 1.05];
 }
 if (all != null){
 if (all[4].x < destination[0]){
 packet.keys[68] = true;
-}else{
+}else if (all[4].x != destination[0]){
   packet.keys[65] = true;
 }
 if (all[4].y < destination[1]){
 packet.keys[83] = true;
-}else{
+}else if (all[4].y != destination[1]){
 packet.keys[87] = true;
 }
 }
