@@ -2,6 +2,7 @@ var socket = io();
 var packet = {};
 var blueflag;
 var redflag;
+var destination = [700,350];
 function preload() {
 redflag = loadImage("client/blueflag.png");
 blueflag = loadImage("client/redflag.png");
@@ -75,8 +76,26 @@ strokeWeight(5);
 
 }
 packet = {mouseX:mouseX,mouseY:mouseY,mouseIsPressed:mouseIsPressed,keys:{}};
+if( !/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
 for (var i = 3; i < 255; i++) {
   packet.keys[i] = keyIsDown(i);
+}
+}else{
+if (mouseIsPressed){
+destination = [mouseX,mouseY];
+}
+if (all != null){
+if (all[4].x < destination[0]){
+packet.keys[68] = true;
+}else{
+  packet.keys[65] = true;
+}
+if (all[4].y < destination[1]){
+packet.keys[83] = true;
+}else{
+packet.keys[87] = true;
+}
+}
 }
 socket.emit('packet',packet);
 }

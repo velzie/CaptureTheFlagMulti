@@ -173,7 +173,7 @@ if (clients[c].connected){
 all.push(clients[c].you);
 }
 }
-socket.emit('drawdata',[score,flags,all,powerups]);
+socket.emit('drawdata',[score,flags,all,powerups,socket.you]);
 })
 });
 function collideRectRect(x, y, w, h, x2, y2, w2, h2) {
