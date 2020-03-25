@@ -1,11 +1,18 @@
 var socket = io();
 var packet = {};
+var blueflag;
+var redflag;
+function preload() {
+redflag = loadImage("client/blueflag.png");
+blueflag = loadImage("client/redflag.png");
+}
 function setup() {
 createCanvas(1400,700);
 frame(null);
 }
 function frame(all) {
 if (all != null){
+  stroke(0);
   strokeWeight(0);
   background(0);
   fill(255,0,0);
@@ -28,15 +35,30 @@ if (all != null){
   text(all[0][1],700,0,150,100);
   strokeWeight(5);
   fill(100,50,50);
-  rect(all[1][0].x,all[1][0].y,20,20);
+  image(redflag,all[1][0].x,all[1][0].y);
   fill(50,50,100);
-  rect(all[1][1].x,all[1][1].y,20,20);
+  image(blueflag,all[1][1].x,all[1][1].y);
   for (var power of all[3]) {
-    fill(0,255,255);
+    switch (power.type) {
+      case 0:
+        fill(0, 204, 255);
+      break;
+      case 1:
+        fill(153, 51, 255);
+      break;
+      case 2:
+        fill(255, 153, 0);
+      break;
+    }
     rect(power.x,power.y,20,20);
   }
     //flags
 for (var player of all[2]) {
+strokeWeight(0);
+fill(0,0,0,100);
+if (player.forcefield){
+ellipse(player.x + 10,player.y + 10,40);
+}
 strokeWeight(5);
   if (player.team == 0){
     fill(255,0,0);
@@ -44,6 +66,11 @@ strokeWeight(5);
     fill(0,0,255);
   }
   rect(player.x,player.y,20,20);
+  if (player.laser){
+    strokeWeight(20);
+    stroke(255, 153, 0);
+    line(player.x + 10,player.y + 10,player.x + 1000 * player.dir[0] + 10,player.y + 1000 * player.dir[1] + 10)
+  }
 }
 
 }
